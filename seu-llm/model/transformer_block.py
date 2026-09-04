@@ -10,6 +10,7 @@ class TransformerBlock(nn.Module):
         self,
         d_model: int,
         hidden_dim: int,
+        num_heads: int,
         dropout: float = 0.0,
     ):
         super().__init__()
@@ -18,6 +19,7 @@ class TransformerBlock(nn.Module):
 
         self.attention = SelfAttention(
             d_model=d_model,
+            num_heads=num_heads,
             dropout=dropout,
         )
 
@@ -37,4 +39,3 @@ class TransformerBlock(nn.Module):
         x = x + self.mlp(self.norm2(x))
 
         return x
-    
