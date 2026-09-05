@@ -1,3 +1,6 @@
+import re
+
+
 class Tokenizer:
     def __init__(self):
         # Tokens especiais
@@ -6,6 +9,9 @@ class Tokenizer:
             "<UNK>": 1,
             "<BOS>": 2,
             "<EOS>": 3,
+            "<NL>": 4,
+            "<INDENT>": 5,
+            "<DEDENT>": 6,
         }
 
         self.token_to_id = dict(self.special_tokens)
@@ -17,7 +23,7 @@ class Tokenizer:
 
     def build_vocabulary(self, texts):
         """
-        Constrói o vocabulário a partir de uma lista de textos.
+        Constrói o vocabulário a partir de textos e códigos.
         """
 
         for text in texts:
@@ -30,12 +36,65 @@ class Tokenizer:
                     self.token_to_id[token] = token_id
                     self.id_to_token[token_id] = token
 
-    def _split_text(self, text):
+    def _tokenize_line(self, line):
         """
-        Divide o texto em tokens básicos.
+        Divide uma linha em palavras, números,
+        operadores e símbolos.
         """
 
-        return text.lower().split()
+        pattern = r"""
+            ==|!=|<=|>=|->|=>|//|\*\*|&&|\|\|
+            |[^\W\d_]\w*
+            |\d+(?:\.\d+)?
+            |[^\w\s]
+        """
+
+        return re.findall(
+            pattern,
+            line,
+            re.VERBOSE,
+        )
+
+    def _split_text(self, text):
+        """
+        Divide texto e código em tokens.
+
+        Preserva:
+        - palavras em Unicode
+        - números
+        - pontuação
+        - operadores
+        - símbolos
+        - quebras de linha
+        - indentação
+        """
+
+        tokens = []
+
+        lines = text.splitlines()
+
+        for line_index, line in enumerate(lines):
+            stripped = line.lstrip(" ")
+
+            indent_spaces = len(line) - len(stripped)
+
+            indent_level = indent_spaces // 4
+
+            if indent_level > 0:
+                tokens.extend(
+                    ["<INDENT>"] * indent_level
+                )
+
+            line_tokens = self._tokenize_line(
+                stripped
+            )
+
+            tokens.extend(line_tokens)
+
+            if line_index < len(lines) - 1:
+                tokens.append("<NL>")
+
+        return tokens
 
     def encode(
         self,
@@ -44,7 +103,7 @@ class Tokenizer:
         add_eos=False,
     ):
         """
-        Converte texto em IDs.
+        Converte texto ou código em IDs.
         """
 
         tokens = self._split_text(text)
@@ -73,7 +132,7 @@ class Tokenizer:
 
     def decode(self, token_ids):
         """
-        Converte IDs novamente em texto.
+        Converte IDs novamente em texto ou código.
         """
 
         tokens = []
@@ -86,7 +145,103 @@ class Tokenizer:
 
             tokens.append(token)
 
-        return " ".join(tokens)
+        resultado = ""
+        indent_level = 0
+        inicio_linha = True
+
+        for token in tokens:
+            if token == "<BOS>":
+                continue
+
+            if token == "<EOS>":
+                break
+
+            if token == "<NL>":
+                resultado = resultado.rstrip()
+                resultado += "\n"
+                inicio_linha = True
+                continue
+
+            if token == "<INDENT>":
+                indent_level += 1
+                continue
+
+            if token == "<DEDENT>":
+                indent_level = max(
+                    0,
+                    indent_level - 1,
+                )
+                continue
+
+            if inicio_linha:
+                resultado += "    " * indent_level
+                inicio_linha = False
+
+            # Símbolos que não precisam de espaço antes.
+            if token in {
+                ",",
+                ".",
+                ";",
+                ":",
+                ")",
+                "]",
+                "}",
+            }:
+                resultado = resultado.rstrip()
+                resultado += token
+
+            # Símbolos de abertura.
+            elif token in {
+                "(",
+                "[",
+                "{",
+            }:
+                resultado = resultado.rstrip()
+                resultado += token
+
+            # Operadores.
+            elif token in {
+                "+",
+                "-",
+                "*",
+                "/",
+                "%",
+                "=",
+                "==",
+                "!=",
+                "<",
+                ">",
+                "<=",
+                ">=",
+                "->",
+                "=>",
+                "//",
+                "**",
+                "&&",
+                "||",
+            }:
+                resultado = resultado.rstrip()
+                resultado += " " + token + " "
+
+            # Texto normal.
+            else:
+                if (
+                    resultado
+                    and not resultado.endswith(
+                        (
+                            " ",
+                            "\n",
+                            "(",
+                            "[",
+                            "{",
+                        )
+                    )
+                ):
+                    resultado += " "
+
+                resultado += token
+
+        return resultado.rstrip()
 
     def vocab_size(self):
         """
