@@ -18,6 +18,12 @@ def carregar_dataset(caminho):
     with open(caminho, "r", encoding="utf-8") as arquivo:
         dados = json.load(arquivo)
 
+    if "examples" in dados:
+        return [
+            exemplo["content"]
+            for exemplo in dados["examples"]
+        ]
+
     return dados["texts"]
 
 
@@ -25,11 +31,11 @@ def main():
 
     print("=" * 50)
 
-    print("TREINAMENTO V2 DO MODELO")
+    print("TREINAMENTO V3 DO MODELO")
 
     print("=" * 50)
 
-    caminho_dataset = "data/v2/dataset.json"
+    caminho_dataset = "data/v3/dataset.json"
 
     textos = carregar_dataset(caminho_dataset)
 
@@ -37,7 +43,7 @@ def main():
 
     print(caminho_dataset)
 
-    print("\nTextos:")
+    print("\nExemplos:")
 
     print(len(textos))
 
@@ -154,7 +160,7 @@ def main():
 
     print("\n" + "=" * 50)
 
-    print("TREINAMENTO V2 CONCLUÍDO!")
+    print("TREINAMENTO V3 CONCLUÍDO!")
 
     print("=" * 50)
 

@@ -1,0 +1,116 @@
+{
+    "name": "Sentinel V3 Dataset",
+    "version": "v3",
+    "examples": [
+        {
+            "type": "text",
+            "language": "python",
+            "content": "Python é uma linguagem de programação."
+        },
+        {
+            "type": "text",
+            "language": "python",
+            "content": "Uma variável armazena um valor."
+        },
+        {
+            "type": "text",
+            "language": "python",
+            "content": "Uma função executa uma tarefa específica."
+        },
+        {
+            "type": "text",
+            "language": "python",
+            "content": "def somar(a, b):\n    return a + b"
+        },
+        {
+            "type": "text",
+            "language": "python",
+            "content": "def multiplicar(a, b):\n    return a * b"
+        },
+        {
+            "type": "text",
+            "language": "python",
+            "content": "if idade >= 18:\n    print('maior de idade')"
+        },
+        {
+            "type": "text",
+            "language": "python",
+            "content": "for numero in numeros:\n    print(numero)"
+        },
+        {
+            "type": "text",
+            "language": "python",
+            "content": "while contador < 10:\n    contador += 1"
+        },
+        {
+            "type": "text",
+            "language": "python",
+            "content": "lista = [1, 2, 3, 4, 5]"
+        },
+        {
+            "type": "text",
+            "language": "python",
+            "content": "print('Olá, mundo!')"
+        },
+        {
+            "type": "text",
+            "language": "javascript",
+            "content": "JavaScript é uma linguagem muito usada no desenvolvimento web."
+        },
+        {
+            "type": "text",
+            "language": "javascript",
+            "content": "const soma = (a, b) => a + b;"
+        },
+        {
+            "type": "text",
+            "language": "javascript",
+            "content": "let contador = 0;"
+        },
+        {
+            "type": "text",
+            "language": "javascript",
+            "content": "for (const numero of numeros) {\n    console.log(numero);\n}"
+        },
+        {
+            "type": "text",
+            "language": "javascript",
+            "content": "function somar(a, b) {\n    return a + b;\n}"
+        },
+        {
+            "type": "text",
+            "language": "javascript",
+            "content": "console.log('Olá, mundo!');"
+        },
+        {
+            "type": "text",
+            "language": "programming",
+            "content": "Um programa é um conjunto de instruções executadas por um computador."
+        },
+        {
+            "type": "text",
+            "language": "programming",
+            "content": "Uma condição permite executar diferentes caminhos dependendo de uma situação."
+        },
+        {
+            "type": "text",
+            "language": "programming",
+            "content": "Um loop repete uma sequência de instruções."
+        },
+        {
+            "type": "text",
+            "language": "programming",
+            "content": "Uma função pode receber entradas e produzir uma saída."
+        },
+        {
+            "type": "text",
+            "language": "programming",
+            "content": "Um algoritmo é uma sequência de passos para resolver um problema."
+        },
+        {
+            "type": "text",
+            "language": "programming",
+            "content": "Uma variável pode ter seu valor alterado durante a execução de um programa."
+        }
+    ]
+}

@@ -5,6 +5,7 @@ from tokenizer.tokenizer import Tokenizer
 
 
 def carregar_modelo(caminho="modelo_treinado.pt"):
+
     checkpoint = torch.load(
         caminho,
         map_location="cpu",
@@ -41,6 +42,7 @@ def prever_proximo_token(
     tokenizer,
     texto,
 ):
+
     token_ids = tokenizer.encode(texto)
 
     if not token_ids:
@@ -57,6 +59,7 @@ def prever_proximo_token(
     )
 
     with torch.no_grad():
+
         logits = model(input_ids)
 
     # Pegamos a previsão correspondente ao último token.
@@ -75,27 +78,34 @@ def prever_proximo_token(
 
 
 def main():
+
     print("=" * 50)
-    print("TESTE DE INFERÊNCIA - SENTINEL V2")
+
+    print("TESTE DE INFERÊNCIA - SENTINEL V3")
+
     print("=" * 50)
 
     model, tokenizer = carregar_modelo()
 
     print("\nModelo carregado!")
+
     print(
         f"Vocabulário: {len(tokenizer.token_to_id)}"
     )
 
     testes = [
-        "Eu gosto de",
         "Python é uma",
-        "Programar é",
-        "Java é uma",
+        "JavaScript é uma",
+        "def somar",
+        "def multiplicar",
+        "Uma função",
+        "Um algoritmo",
     ]
 
     print("\nPrevisões:")
 
     for texto in testes:
+
         proximo_token = prever_proximo_token(
             model,
             tokenizer,
@@ -105,15 +115,20 @@ def main():
         print(
             f'Entrada: "{texto}"'
         )
+
         print(
             f"Próximo token: {proximo_token}"
         )
+
         print("-" * 30)
 
     print("\n" + "=" * 50)
-    print("TESTE CONCLUÍDO!")
+
+    print("TESTE DE INFERÊNCIA V3 CONCLUÍDO!")
+
     print("=" * 50)
 
 
 if __name__ == "__main__":
+
     main()
