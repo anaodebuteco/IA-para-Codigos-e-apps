@@ -32,3 +32,10 @@ Thumbs.db
 
 # Documentação interna
 Docs/
+
+# Modelos treinados
+*.pt
+
+# Python
+__pycache__/
+*.pyc

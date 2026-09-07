@@ -1,5 +1,7 @@
 import torch
 
+from torch.utils.data import DataLoader
+
 from model.transformer import Transformer
 from tokenizer.tokenizer import Tokenizer
 from training.dataset import TextDataset
@@ -8,12 +10,8 @@ from training.loss import calcular_perda
 
 def main():
     print("=" * 50)
-    print("PRIMEIRO TREINAMENTO DO MODELO")
+    print("TREINAMENTO V2 DO MODELO")
     print("=" * 50)
-
-    # -----------------------------------------
-    # Dados
-    # -----------------------------------------
 
     textos = [
         "Eu gosto de Python",
@@ -24,20 +22,12 @@ def main():
         "JavaScript é usado na web",
     ]
 
-    # -----------------------------------------
-    # Tokenizador
-    # -----------------------------------------
-
     tokenizer = Tokenizer()
 
     tokenizer.build_vocabulary(textos)
 
     print("\nVocabulário:")
     print(tokenizer.vocab_size())
-
-    # -----------------------------------------
-    # Dataset
-    # -----------------------------------------
 
     sequence_length = 8
 
@@ -50,9 +40,16 @@ def main():
     print("\nSequências:")
     print(len(dataset))
 
-    # -----------------------------------------
-    # Modelo
-    # -----------------------------------------
+    batch_size = 4
+
+    dataloader = DataLoader(
+        dataset,
+        batch_size=batch_size,
+        shuffle=True,
+    )
+
+    print("\nMini-batches por época:")
+    print(len(dataloader))
 
     model = Transformer(
         vocab_size=tokenizer.vocab_size(),
@@ -72,18 +69,10 @@ def main():
         )
     )
 
-    # -----------------------------------------
-    # Otimizador
-    # -----------------------------------------
-
     optimizer = torch.optim.AdamW(
         model.parameters(),
         lr=0.001,
     )
-
-    # -----------------------------------------
-    # Treinamento
-    # -----------------------------------------
 
     model.train()
 
@@ -92,13 +81,7 @@ def main():
     for epoch in range(epochs):
         perda_total = 0.0
 
-        for index in range(len(dataset)):
-            input_ids, target_ids = dataset[index]
-
-            # Adiciona dimensão do lote.
-            input_ids = input_ids.unsqueeze(0)
-            target_ids = target_ids.unsqueeze(0)
-
+        for input_ids, target_ids in dataloader:
             optimizer.zero_grad()
 
             logits = model(input_ids)
@@ -109,17 +92,17 @@ def main():
             )
 
             perda.backward()
-
             optimizer.step()
 
             perda_total += perda.item()
 
-        perda_media = perda_total / len(dataset)
+        perda_media = perda_total / len(dataloader)
 
         print(
             f"Época {epoch + 1}/{epochs} "
             f"- perda: {perda_media:.4f}"
         )
+
     torch.save(
         {
             "model_state_dict": model.state_dict(),
@@ -138,8 +121,9 @@ def main():
 
     print("\nModelo salvo em:")
     print("modelo_treinado.pt")
+
     print("\n" + "=" * 50)
-    print("TREINAMENTO CONCLUÍDO!")
+    print("TREINAMENTO V2 CONCLUÍDO!")
     print("=" * 50)
 
 
