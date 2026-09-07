@@ -1,32 +1,52 @@
+import json
+
 import torch
 
 from torch.utils.data import DataLoader
 
 from model.transformer import Transformer
+
 from tokenizer.tokenizer import Tokenizer
+
 from training.dataset import TextDataset
+
 from training.loss import calcular_perda
 
 
+def carregar_dataset(caminho):
+
+    with open(caminho, "r", encoding="utf-8") as arquivo:
+        dados = json.load(arquivo)
+
+    return dados["texts"]
+
+
 def main():
-    print("=" * 50)
-    print("TREINAMENTO V2 DO MODELO")
+
     print("=" * 50)
 
-    textos = [
-        "Eu gosto de Python",
-        "Python é uma linguagem",
-        "Eu gosto de programar",
-        "Programar é divertido",
-        "Java é uma linguagem",
-        "JavaScript é usado na web",
-    ]
+    print("TREINAMENTO V2 DO MODELO")
+
+    print("=" * 50)
+
+    caminho_dataset = "data/v2/dataset.json"
+
+    textos = carregar_dataset(caminho_dataset)
+
+    print("\nDataset:")
+
+    print(caminho_dataset)
+
+    print("\nTextos:")
+
+    print(len(textos))
 
     tokenizer = Tokenizer()
 
     tokenizer.build_vocabulary(textos)
 
     print("\nVocabulário:")
+
     print(tokenizer.vocab_size())
 
     sequence_length = 8
@@ -38,6 +58,7 @@ def main():
     )
 
     print("\nSequências:")
+
     print(len(dataset))
 
     batch_size = 4
@@ -49,6 +70,7 @@ def main():
     )
 
     print("\nMini-batches por época:")
+
     print(len(dataloader))
 
     model = Transformer(
@@ -62,6 +84,7 @@ def main():
     )
 
     print("\nParâmetros:")
+
     print(
         sum(
             parametro.numel()
@@ -79,9 +102,11 @@ def main():
     epochs = 10
 
     for epoch in range(epochs):
+
         perda_total = 0.0
 
         for input_ids, target_ids in dataloader:
+
             optimizer.zero_grad()
 
             logits = model(input_ids)
@@ -92,6 +117,7 @@ def main():
             )
 
             perda.backward()
+
             optimizer.step()
 
             perda_total += perda.item()
@@ -106,8 +132,11 @@ def main():
     torch.save(
         {
             "model_state_dict": model.state_dict(),
+
             "token_to_id": tokenizer.token_to_id,
+
             "id_to_token": tokenizer.id_to_token,
+
             "config": {
                 "d_model": 128,
                 "num_layers": 4,
@@ -120,12 +149,16 @@ def main():
     )
 
     print("\nModelo salvo em:")
+
     print("modelo_treinado.pt")
 
     print("\n" + "=" * 50)
+
     print("TREINAMENTO V2 CONCLUÍDO!")
+
     print("=" * 50)
 
 
 if __name__ == "__main__":
+
     main()

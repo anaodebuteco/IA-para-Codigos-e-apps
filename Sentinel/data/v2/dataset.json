@@ -1,0 +1,13 @@
+{
+    "name": "Sentinel Main Dataset",
+    "version": "main",
+    "texts": [
+        "Eu gosto de Python",
+        "Python é uma linguagem",
+        "Eu gosto de programar",
+        "Programar é divertido",
+        "Java é uma linguagem",
+        "JavaScript é usado na web"
+    ]
+}
+
