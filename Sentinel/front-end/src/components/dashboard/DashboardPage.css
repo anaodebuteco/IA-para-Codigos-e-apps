@@ -1,0 +1,11 @@
+.dashboard-page {
+  /* Garante altura mínima de tela cheia */
+  min-height: 100vh;
+}
+
+.dashboard-header {
+  /* Reforça a hierarquia com sombra sutil */
+  box-shadow:
+    rgba(0, 0, 0, 0.3) 0 1px 2px inset,
+    rgba(0, 0, 0, 0.2) 0 1px 0;
+}

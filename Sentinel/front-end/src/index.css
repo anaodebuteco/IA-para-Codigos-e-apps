@@ -1,0 +1,83 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+  Sentinel Design System - Dark Theme (Decepticon Inspired)
+  Paleta: Preto profundo, grafite/carvão, roxo profundo/roxo elétrico
+*/
+
+:root {
+  /* --- Backgrounds --- */
+  --bg-primary: #0a0a0c;
+  --bg-secondary: #121216;
+
+  /* --- Surfaces --- */
+  --surface: #1a1a22;
+  --surface-hover: #242430;
+  --surface-active: #2e2e3e;
+
+  /* --- Accent (Sentinel Purple) --- */
+  --accent: #7c3aed;
+  --accent-muted: #4c1d95;
+  --accent-hover: #8b5cf6;
+  --accent-glow: rgba(124, 58, 237, 0.15);
+
+  /* --- Textos --- */
+  --text-primary: #f3f4f6;
+  --text-secondary: #9ca3af;
+  --text-muted: #6b7280;
+
+  /* --- Bordas --- */
+  --border-subtle: #262632;
+  --border-active: #7c3aed;
+
+  /* --- Semânticas --- */
+  --success: #10b981;
+  --warning: #f59e0b;
+  --error: #ef4444;
+  --info: #3b82f6;
+
+  /* --- Tipografia --- */
+  --font-sans: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Fira Code', ui-monospace, Consolas, monospace;
+
+  /* --- Tamanhos base --- */
+  --sidebar-width: 240px;
+  --sidebar-width-collapsed: 56px;
+  --explorer-width: 280px;
+  --ai-panel-width: 360px;
+  --header-height: 48px;
+  --statusbar-height: 32px;
+}
+
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Reset de scrollbars finas para tema escuro */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--surface);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--surface-hover);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--border-active);
+}
