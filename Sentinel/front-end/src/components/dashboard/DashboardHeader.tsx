@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom'
 import { Logo } from '@/components/common/Logo'
 
 export function DashboardHeader() {
@@ -5,18 +6,24 @@ export function DashboardHeader() {
     <header className="dashboard-header flex items-center justify-between h-14 px-6 bg-surface border-b border-border-subtle">
       <Logo />
       <nav className="flex items-center gap-4">
-        <a
-          href="/dashboard"
-          className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors"
+        <Link
+          to="/dashboard"
+          className="text-sm font-medium text-text-primary transition-colors"
         >
           Dashboard
-        </a>
-        <a
-          href="#"
+        </Link>
+        <Link
+          to="/workspace/default"
           className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors"
         >
           Workspace
-        </a>
+        </Link>
+        <Link
+          to="/settings"
+          className="text-sm font-medium text-text-secondary hover:text-text-primary transition-colors"
+        >
+          Configurações
+        </Link>
       </nav>
     </header>
   )
