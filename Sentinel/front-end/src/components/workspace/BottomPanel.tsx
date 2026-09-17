@@ -1,6 +1,7 @@
 import { useState } from 'react'
-import type { ElementType } from 'react'
+import type { CSSProperties, ElementType, PointerEvent } from 'react'
 import { Terminal, AlertCircle, FileText, List } from 'lucide-react'
+import { ResizeHandle } from './ResizeHandle'
 
 type BottomTab = 'terminal' | 'output' | 'problems' | 'logs'
 
@@ -8,6 +9,11 @@ interface TabItem {
   id: BottomTab
   label: string
   icon: ElementType
+}
+
+interface BottomPanelProps {
+  style?: CSSProperties
+  onResizePointerDown?: (e: PointerEvent) => void
 }
 
 const tabs: TabItem[] = [
@@ -28,12 +34,13 @@ const tabs: TabItem[] = [
  *
  * A funcionalidade completa do Terminal será implementada na Etapa 6.
  */
-export function BottomPanel() {
+export function BottomPanel({ style, onResizePointerDown }: BottomPanelProps) {
   const [activeTab, setActiveTab] = useState<BottomTab>('terminal')
 
   return (
     <section
-      className="h-48 min-h-[120px] max-h-96 flex flex-col border-t border-border-subtle bg-surface"
+      className="relative h-48 min-h-[120px] max-h-96 flex flex-col border-t border-border-subtle bg-surface"
+      style={style}
       aria-label="Painel Inferior"
     >
       {/* Barra de Abas */}
@@ -70,6 +77,13 @@ export function BottomPanel() {
           será implementada em etapa futura.
         </span>
       </div>
+
+      {onResizePointerDown && (
+        <ResizeHandle
+          direction="vertical"
+          onPointerDown={onResizePointerDown}
+        />
+      )}
     </section>
   )
 }

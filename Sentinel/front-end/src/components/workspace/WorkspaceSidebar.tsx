@@ -1,16 +1,20 @@
-import type { ReactNode } from 'react'
+import type { CSSProperties, PointerEvent, ReactNode } from 'react'
 import type { SidebarPanel } from './types'
+import { ResizeHandle } from './ResizeHandle'
 
 interface WorkspaceSidebarProps {
   activePanel: SidebarPanel
+  style?: CSSProperties
+  onResizePointerDown?: (e: PointerEvent) => void
 }
 
 const SIDEBAR_CLASSES = [
+  'relative',
   'hidden',
-  'w-64',
   'min-w-[220px]',
   'max-w-xs',
   'flex-col',
+  'flex-shrink-0',
   'border-r',
   'border-border-subtle',
   'bg-surface',
@@ -28,9 +32,13 @@ const SIDEBAR_CLASSES = [
  *
  * Nenhuma funcionalidade real implementada nesta etapa.
  */
-export function WorkspaceSidebar({ activePanel }: WorkspaceSidebarProps) {
+export function WorkspaceSidebar({
+  activePanel,
+  style,
+  onResizePointerDown,
+}: WorkspaceSidebarProps) {
   return (
-    <aside className={SIDEBAR_CLASSES}>
+    <aside className={SIDEBAR_CLASSES} style={style}>
       <div className="flex items-center justify-between p-3 border-b border-border-subtle">
         <h2 className="text-xs font-semibold text-text-muted uppercase">
           {sidebarTitle[activePanel]}
@@ -40,6 +48,13 @@ export function WorkspaceSidebar({ activePanel }: WorkspaceSidebarProps) {
       <div className="flex-1 overflow-y-auto p-4">
         {sidebarContent[activePanel]}
       </div>
+
+      {onResizePointerDown && (
+        <ResizeHandle
+          direction="horizontal"
+          onPointerDown={onResizePointerDown}
+        />
+      )}
     </aside>
   )
 }

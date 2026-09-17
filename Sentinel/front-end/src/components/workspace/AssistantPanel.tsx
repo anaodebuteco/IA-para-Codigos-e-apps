@@ -1,3 +1,6 @@
+import type { CSSProperties, PointerEvent } from 'react'
+import { ResizeHandle } from './ResizeHandle'
+
 // Placeholder estrutural do painel lateral direito.
 // Nenhuma lógica de IA implementada na Etapa 2.
 
@@ -14,10 +17,17 @@
  * - aplicação de diffs
  * - chamadas ao modelo
  */
-export function AssistantPanel() {
+export function AssistantPanel({
+  style,
+  onResizePointerDown,
+}: {
+  style?: CSSProperties
+  onResizePointerDown?: (e: PointerEvent) => void
+}) {
   return (
     <aside
-      className="hidden w-80 min-w-[280px] max-w-sm flex-col border-l border-border-subtle bg-surface lg:flex"
+      className="relative hidden min-w-[280px] max-w-sm flex-col flex-shrink-0 border-l border-border-subtle bg-surface lg:flex"
+      style={style}
       aria-label="AI Assistant Panel"
     >
       <div className="flex items-center justify-between p-3 border-b border-border-subtle">
@@ -37,6 +47,12 @@ export function AssistantPanel() {
           </p>
         </div>
       </div>
+      {onResizePointerDown && (
+        <ResizeHandle
+          direction="horizontal"
+          onPointerDown={onResizePointerDown}
+        />
+      )}
     </aside>
   )
 }
