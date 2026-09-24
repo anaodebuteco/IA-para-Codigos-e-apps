@@ -1,6 +1,7 @@
 import type { CSSProperties, PointerEvent, ReactNode } from 'react'
 import type { SidebarPanel } from './types'
 import { ResizeHandle } from './ResizeHandle'
+import { FileExplorer } from './FileExplorer'
 
 interface WorkspaceSidebarProps {
   activePanel: SidebarPanel
@@ -67,7 +68,7 @@ const sidebarTitle: Record<SidebarPanel, string> = {
 }
 
 const sidebarContent: Record<SidebarPanel, ReactNode> = {
-  explorer: <p className="text-sm text-text-secondary">Explorer será implementado em etapa futura.</p>,
+  explorer: <FileExplorer />,
   search: <p className="text-sm text-text-secondary">Busca será implementada em etapa futura.</p>,
   git: <p className="text-sm text-text-secondary">Integração Git será implementada em etapa futura.</p>,
   ai: <p className="text-sm text-text-secondary">Assistente de IA será implementado em etapa futura.</p>,

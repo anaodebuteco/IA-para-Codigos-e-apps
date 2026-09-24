@@ -20,3 +20,6 @@ export * from './git'
 
 // API
 export * from './api'
+
+// File System
+export * from '../services/fileSystem/types'
